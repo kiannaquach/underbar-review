@@ -39,7 +39,7 @@
   // last element.
   _.last = function(array, n) {
     if (n === undefined) {
-      return array[array.length-1];
+      return array[array.length - 1];
     } else if (n === 0) {
       return [];
     } else if (n < array.length) {
@@ -86,22 +86,22 @@
   // Return all elements of an array that pass a truth test.
   _.filter = function(collection, test) {
     const results = [];
-    _.each(collection, function(item){
+    _.each(collection, function(item) {
       if (test(item)) {
         results.push(item);
       }    
-    })
+    });
     return results;
   };
 
   // Return all elements of an array that don't pass a truth test.
   _.reject = function(collection, test) {
     const results = [];
-    _.filter(collection, function(item){
+    _.filter(collection, function(item) {
       if (!test(item)) {
         results.push(item);
       }
-    })
+    });
     return results;
   };
 
@@ -129,7 +129,7 @@
     // like each(), but in addition to running the operation on all
     // the members, it also maintains an array of results.
     const results = [];
-    _.each(collection, function(item){
+    _.each(collection, function(item) {
       results.push(iterator(item));
     });
     return results;
@@ -175,7 +175,16 @@
   //          No accumulator is given so the first element is used.
   _.reduce = function(collection, iterator, accumulator) {
 
-    
+    if (accumulator === undefined) {
+      accumulator = collection[0]
+      collection = collection.slice(1);
+    }
+
+    _.each(collection, function(item) {
+      accumulator = iterator(accumulator, item);
+    });
+  
+    return accumulator;
   };
 
   // Determine if the array or object contains a given value (using `===`).
@@ -194,12 +203,22 @@
   // Determine whether all of the elements match a truth test.
   _.every = function(collection, iterator) {
     // TIP: Try re-using reduce() here.
+    iterator = iterator || _.identity;
+    return _.reduce(collection, function(acc, item){
+      if (!acc) {
+        return false;
+      }
+      return !!iterator(item);
+    }, true);
   };
 
   // Determine whether any of the elements pass a truth test. If no iterator is
   // provided, provide a default one
   _.some = function(collection, iterator) {
     // TIP: There's a very clever way to re-use every() here.
+    return _.every(collection, function(item) {
+      return !iterator(item)
+    });
   };
 
 
@@ -222,11 +241,23 @@
   //     bla: "even more stuff"
   //   }); // obj1 now contains key1, key2, key3 and bla
   _.extend = function(obj) {
+    _.each(arguments, function(extendObj) {
+      for (let key in extendObj) {
+        obj[key] = extendObj[key]          
+      }
+    });
+    return obj
   };
 
   // Like extend, but doesn't ever overwrite a key that already
   // exists in obj
   _.defaults = function(obj) {
+    _.each(arguments, function(extendObj) {
+      for (let key in extendObj) {
+        obj[key] = obj[key] || extendObj[key];
+      }
+    });
+    return obj
   };
 
 
