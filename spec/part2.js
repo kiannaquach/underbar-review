@@ -58,7 +58,7 @@
       it('should return false given an array and a value not in that array', function() {
         // Replace this line with an `expect` statement that tests
         // the behavior described by the `it` string
-        expect(_.contains([1,2,3], 4)).to.be.false;
+        expect(_.contains([1, 2, 3], 4)).to.be.false;
         // throw new Error('This test is missing.');
       });
 
@@ -151,7 +151,7 @@
       it('should fail for a set containing no matching values', function() {
         // Replace this line with an `expect` statement that tests
         // the behavior described by the `it` string
-        expect(_.some([1,5,3], isEven)).to.be.false;
+        expect(_.some([1, 5, 3], isEven)).to.be.false;
         // throw new Error('This test is missing.');
       });
 
@@ -273,7 +273,10 @@
       it('should copy any property whose key is not already set on the target', function() {
         // Replace this line with an `expect` statement that tests
         // the behavior described by the `it` string
-        throw new Error('This test is missing.');
+        let obj = {a: 1, b: 2};
+        let obj2 = {c: 'puppies'};
+        expect(_.defaults(obj, obj2)).to.eql({a: 1, b: 2, c: 'puppies'});
+        // throw new Error('This test is missing.');
       });
 
       it('should not copy a property if that key is already set on the target', function() {
